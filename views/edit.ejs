@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Inventory Information</title>
     <style>
@@ -20,7 +19,7 @@
     </div>
     <form action="/update" method="POST">
 
-    <label for="inventoryID" value="item.inventoryID"><b>Restaurant ID*: <%= item.inventoryID %></b></label><br><br>
+    <!-- <label for="inventoryID" value="item.inventoryID"><b>Restaurant ID*: <%= item.inventoryID %></b></label><br><br>
     
     <input type="hidden" id="postId" name="postId" value="<%= item.inventoryID %>" />
      
@@ -42,7 +41,37 @@
     <label for="remark"><b>Remark:</b></label><br>
     <textarea name="remark" cols="50" rows="10" placeholder="" value = "<% if (item.remark) { %><%= item.remark %><% } %>" /></textarea><br>
 
-    <input type="submit" value="update">
+    <input type="submit" value="update"> -->
+    <input type="hidden" name="_id" value="<%= item._id %>">
+    <div class="mb-3">
+        <label for="id" class="form-label">Inventory ID</label>
+        <input type="text" id="id" name="id" class="form-control" placeholder="Inventory ID">
+    </div>
+    <div class="mb-3">
+        <label for="name" class="form-label">Inventory Name</label>
+        <input type="text" id="name" name="name" class="form-control" placeholder="Inventory Name">
+    </div>
+    
+    <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <input type="text" id="category" name="category" class="form-control" placeholder="Category">
+    </div>
+    <div class="mb-3">
+        <label for="status" class="form-label">Status</label>
+        <input type="text" id="status" name="status" class="form-control" placeholder="Status">
+    </div>
+
+    <div class="mb-3">
+      <label for="location" class="form-label">Location</label>
+      <input type="text" id="location" name="location" class="form-control" placeholder="Location">
+    </div>
+
+    <div class="mb-3">
+      <label for="date" class="form-label">Date</label>
+      <input type="text" id="date" name="date" class="form-control" placeholder="date">
+    </div>
+    <button type="submit" class="btn btn-primary">Update</button>
+    </form>
     <br><br>
     <a href="/" role="button"><i>Back to homepage</i></a>
 </html>

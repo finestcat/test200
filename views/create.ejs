@@ -2,11 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="X-UA-Compatible" content="width=device-width, initial-scale=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Inventory</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
     label{
         font-size: 1.3em;
@@ -20,13 +18,13 @@
             <h1>Create New Inventory Item</h1>
         </div>
     <form action="/create" method="POST">
-        <label for='inventoryID'><b>*Inventory ID:</b></label><br>
+        <!-- <label for='inventoryID'><b>*Inventory ID:</b></label><br>
             <input type="text" id="inventoryID" name="inventoryID" placeholder="" pattern="[0-9]{8}" required><br>
         <small>Format: XXXXXXXX (8 digit number)</small><br><br>
         <label for='name'><b>*Inventory Name:</b></label><br>
-          <input type="text" id="name" name="name" placeholder="" required><br><br>
+          <input type="text" id="name" name="name" placeholder="" required><br><br> -->
 
-        <label for='category'><b>*Category:</b></label><br>
+        <!-- <label for='category'><b>*Category:</b></label><br>
           <select id="category" name="category" required>
             <option value="furniture">Furniture</option>
             <option value="computer devices">Computer devices</option>
@@ -43,10 +41,10 @@
         <label for='location'><b>*Location:</b></label><br>
           <input type="text" id="location" name="location" placeholder="" required><br><br>
         <label for='date'><b>Date:</b></label><br>
-            <input type="text" id="date" name="date" placeholder=""><br><br>
+            <input type="text" id="date" name="date" placeholder=""><br><br> -->
 
 
-      <!-- <div class="mb-3">
+      <div class="mb-3">
           <label for="id" class="form-label">Inventory ID</label>
           <input type="text" id="id" name="id" class="form-control" placeholder="Inventory ID">
       </div>
@@ -75,8 +73,8 @@
       </div>
 
 
- -->
-      <button type="submit" value="Create" id="Create">Create</button>
+
+      <button type="submit" id="Create_btn">Create</button>
     </form> 
     <br><br>
     <a href="/" role="button"><i>Back to homepage</i></a>
