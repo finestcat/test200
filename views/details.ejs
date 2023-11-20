@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details</title>
+    <style>
+        p{
+            font-size: 1.3em;
+        }
+    </style>
+</head>
+<body>
+    <div class="jumbotron text-center">
+        <h1>Inventory Information</h1>
+    </div>
+    <div class="row">
+        <p>Inventory ID:  <% if (typeof (item.inventoryID) !== "undefined") { %><%= item.inventoryID %><% } %></p><br>
+        <p>Inventory Name:  <% if (typeof (item.name) !== "undefined") { %><%= item.name %><% } %></p><br>
+        <p>Category:  <% if (typeof (item.category) !== "undefined") { %><%= item.category %><% } %></p><br>
+        <p>Status:  <% if (typeof (item.status) !== "undefined") { %><%= item.status %><% } %></p><br>
+        <p>Location:  <% if (typeof (item.location) !== "undefined") { %><%= item.location %><% } %></p><br>
+        <p>Date:  <% if (typeof (item.date) !== "undefined") { %><%= item.date %><% } %></p><br>
+        <p>Remark:  <% if (typeof (item.remark) !== "undefined") { %><%= item.remark %><% } %></p><br>
+    </div>
+        <a href="/edit?_id=<%= item._id %>" >Update the inventory</a><br><br>
+        <a href="/delete?_id=<%= item._id %>&owner=<%= item.ownerID %>">Delete the inventory</a><br><br>
+        <br><br>
+    <a href="/" role="button"><i>Back to homepage</i></a>
+</body>
+</html>
+

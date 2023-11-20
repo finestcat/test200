@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Inventory</title>
+    <style>
+    label{
+        font-size: 1.3em;
+    }
+    </style>
+</head>
+
+<div>
+<body>
+    <div class="jumbotron text-center">
+            <h1>Create New Inventory Item</h1>
+        </div>
+    <form action="/create" method="POST">
+    <label for='inventoryID'><b>*Inventory ID:</b></label><br>
+            <input type="text" id="inventoryID" name="inventoryID" placeholder="" pattern="[0-9]{8}" required><br>
+        <small>Format: XXXXXXXX (8 digit number)</small><br><br>
+        <label for='name'><b>*Inventory Name:</b></label><br>
+          <input type="text" id="name" name="name" placeholder="" required><br><br>
+
+        <label for='category'><b>*Category:</b></label><br>
+          <select id="category" name="category" required>
+            <option value="furniture">Furniture</option>
+            <option value="computer devices">Computer devices</option>
+            <option value="software">Software</option>
+            <option value="book">Book</option>
+            <option value="other">Other</option>
+          </select><br><br>
+        <label for='status'><b>*Status:</b></label><br>
+        <select id="status" name="status" required>
+            <option value="active">Active</option>
+            <option value="pending">Pending</option>
+            <option value="disposal">Disposal</option>
+        </select><br><br>
+        <label for='location'><b>*Location:</b></label><br>
+          <input type="text" id="location" name="location" placeholder="" required><br><br>
+        <label for='date'><b>Date:</b></label><br>
+            <input type="text" id="date" name="date" placeholder=""><br><br>
+
+
+      <!-- <div class="mb-3">
+          <label for="id" class="form-label">Inventory ID</label>
+          <input type="text" id="id" name="id" class="form-control" placeholder="Inventory ID">
+      </div>
+      <div class="mb-3">
+          <label for="name" class="form-label">Inventory Name</label>
+          <input type="text" id="name" name="name" class="form-control" placeholder="Inventory Name">
+      </div>
+      
+      <div class="mb-3">
+          <label for="category" class="form-label">Category</label>
+          <input type="text" id="category" name="category" class="form-control" placeholder="Category">
+      </div>
+      <div class="mb-3">
+          <label for="status" class="form-label">Status</label>
+          <input type="text" id="status" name="status" class="form-control" placeholder="Status">
+      </div>
+
+      <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input type="text" id="location" name="location" class="form-control" placeholder="Location">
+      </div>
+
+      <div class="mb-3">
+        <label for="date" class="form-label">Date</label>
+        <input type="text" id="date" name="date" class="form-control" placeholder="date">
+      </div>
+
+
+ -->
+      <button type="submit" value="Create" id="Create">Create</button>
+    </form> 
+    <br><br>
+    <a href="/" role="button"><i>Back to homepage</i></a>
+</body>
+</div>
+</html>
