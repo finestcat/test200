@@ -27,13 +27,12 @@ app.use(session({
   keys: [SECRETKEY]
 }));
 
-// support parsing of application/json type post data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req,res) => {
 	console.log(req.session);
-	if (!req.session.authenticated) {    // user not logged in!
+	if (!req.session.authenticated) {    
 		res.redirect('/login');
 	} else {
 		res.status(200).render('home',{name:req.session.username});
@@ -47,31 +46,36 @@ app.get('/login', (req,res) => {
 app.post('/login', (req,res) => {
 	users.forEach((user) => {
 		if (user.name == req.body.name && user.password == req.body.password) {
-			// correct user name + password
-			// store the following name/value pairs in cookie session
-			req.session.authenticated = true;        // 'authenticated': true
-			req.session.username = req.body.name;	 // 'username': req.body.name		
+			req.session.authenticated = true;    
+			req.session.username = req.body.name;		
 		}
 	});
 	res.redirect('/');
 });
 
+const findDocument = (db, criteria, callback) => {
+    let cursor = db.collection('Inventory').find(criteria);
+	cursor.toArray(function(err, docs){
+        assert.equal(err, null);
+        return callback(docs);
+    });
+};
+
 app.get('/details', (req,res) => {
-
-        const client = new MongoClient(mongourl);
-        client.connect();
+    const client = new MongoClient(mongourl);
+    client.connect((err) => {
+        assert.equal(null, err);
+        console.log("Connected successfully to MongoDB.");
         const db = client.db(dbName);
-        var dataSet = new Array();
+        const criteria = {};
 
-        const data = db.collection("Inventory").find().sort({"quantity" : 1});
-        data.forEach((element) =>{
-            dataSet.push(element);
-        });
+		console.log("OK for creating a new document");
+		findDocument(db, criteria, (docs) => {
+			client.close();
+		res.status(200).render('details', {items: docs});
+	});
+});
 
-        res.status(200).render('details',{dataSet});
-
-        client.close();
-	
 });
 
 
@@ -86,6 +90,7 @@ const createDocument = (db, createDoc, callback) => {
         callback();
     });
 };
+
 app.post('/create', (req,res) => {
     const client = new MongoClient(mongourl);
     client.connect((err) => {
@@ -101,7 +106,6 @@ app.post('/create', (req,res) => {
 			date: req.body.date
         };
 
-        // Check all the fields of the form are filled in
             console.log("OK for creating a new document");
             createDocument(db, document, () => {
             console.log("Created new document successfully");
@@ -114,71 +118,82 @@ app.post('/create', (req,res) => {
 });
 
 app.get('/delete?:id', (req,res) => {
-    console.log("User entered delete page");
+
     const client = new MongoClient(mongourl);
-    const deletedID = req.query._id;
+    const idDelete = req.query._id;
+
+    client.connect((err) => {
+        assert.equal(null, err);
+
+        const db = client.db(dbName);
+        
+        db.collection("Inventory").deleteOne({_id: ObjectID(idDelete)},(err,result) =>{
+            if(err){
+            	throw err;
+			};
+            client.close();
+        });
+    });
+    res.redirect('/details');
+});
+
+const editDocument = (db, idEdit, editDoc, upsert,callback) => {
+    db.collection('Inventory').update({ _id: ObjectID(idEdit) },editDoc, upsert,(error, results) => {
+        if (error) throw error;
+        console.log(results);
+        callback();
+    });
+};
+
+
+app.get('/edit?:id', (req,res) => {
+	const idEdit = req.query._id;
+	console.log(idEdit)
+	const client = new MongoClient(mongourl);
     client.connect((err) => {
         assert.equal(null, err);
         console.log("Connected successfully to MongoDB.");
         const db = client.db(dbName);
-        
-        db.collection("Inventory").deleteOne({_id: ObjectID(deletedID)},(err,result) =>{
-            if(err)
-            throw err;
-            client.close();
-            console.log("Data has been deleted");
-            });
-        });
-        res.redirect('/details');
+        const criteria = {
+			_id: ObjectID(idEdit)
+		};
+
+		console.log("OK for creating a new document");
+		findDocument(db, criteria, (docs) => {
+			client.close();
+		res.status(200).render('edit', {docs});
+		console.log(docs)
+	});
+});
 });
 
-app.get('/edit', (req,res) => {
-	// res.status(200).render('edit',{});
-	const client = new MongoClient(mongourl);
-	const id = req.query._id; // Get the _id from the query parameter
-	console.log("_id:",id);
-	// Connect to MongoDB
-	client.connect();
-	const db = client.db(dbName);    
-	// Fetch the document to be updated
-	const item = db.collection("Inventory").findOne({ _id: ObjectID(id) });
-  
-	// Render the update.ejs template with the item data
-	res.render('update', { item });
-});
+
 
 app.post('/edit', (req,res) => {
 	const client = new MongoClient(mongourl);
-	const id = req.body._id; // Get the id from the request body
-	console.log("_id:",id);
-  
-	// Connect to MongoDB
-	client.connect((err) => {
-	  assert.equal(null, err);
-	  console.log("Connected successfully to MongoDB.");
-	  const db = client.db(dbName);
-  
-	  // Construct the update query
-	  const updateDoc = {
-		$set: { // Auto fill in the form with existing info
+	const idEdit = req.body._id
+    client.connect((err) => {
+        assert.equal(null, err);
+        console.log("Connected successfully to MongoDB.");
+        const db = client.db(dbName);
+        const editDoc = { $set:{
+			
 			id: req.body.id,
             name: req.body.name,
             category: req.body.category,
             status: req.body.status,
 			location: req.body.location,
 			date: req.body.date
-		}
-	  };
-  
-	  // Perform the update operation
-	  db.collection('Inventory').updateOne({ _id: ObjectID(id) }, updateDoc, (error, result) => {
-		if (error) throw error;
-		console.log('Document updated successfully');
+		}};
+		const upsert = { upsert: true };
+
+		editDocument(db, idEdit, editDoc, upsert,() => {
 		client.close();
 		console.log("Closed DB connection");
-		res.redirect('/details');
-	  });
+		});
+	client.close();
 	});
+	res.redirect('/details');
 });
 
 app.get('/search', (req,res) => {
@@ -190,7 +205,7 @@ app.post('/search', (req,res) => {
 });
 
 app.get('/logout', (req,res) => {
-	req.session = null;   // clear cookie-session
+	req.session = null;  
 	res.redirect('/');
 });
 
@@ -210,10 +225,7 @@ app.post('/api/inventory', (req,res) => {
 			date: req.body.date
         };
 
-        // Check all the fields of the form are filled in
-            console.log("OK for creating a new document");
             createDocument(db, document, () => {
-            console.log("Created new document successfully");
             client.close();
             console.log("Closed DB connection");
     });
@@ -294,9 +306,6 @@ app.delete('/api/inventory/:id', (req, res) => {
 		  res.status(500).json({"error": "missing id"});       
 	  }
   });    		
-			  
 
 
-
-
-app.listen(8099);
+app.listen(app.listen(process.env.PORT || 8099));

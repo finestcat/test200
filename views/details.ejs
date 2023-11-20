@@ -14,18 +14,6 @@
     <div class="jumbotron text-center">
         <h1>Inventory Information</h1>
     </div>
-    <!-- <div class="row">
-        <p>Inventory ID:  <% if (typeof (item.inventoryID) !== "undefined") { %><%= item.inventoryID %><% } %></p><br>
-        <p>Inventory Name:  <% if (typeof (item.name) !== "undefined") { %><%= item.name %><% } %></p><br>
-        <p>Category:  <% if (typeof (item.category) !== "undefined") { %><%= item.category %><% } %></p><br>
-        <p>Status:  <% if (typeof (item.status) !== "undefined") { %><%= item.status %><% } %></p><br>
-        <p>Location:  <% if (typeof (item.location) !== "undefined") { %><%= item.location %><% } %></p><br>
-        <p>Date:  <% if (typeof (item.date) !== "undefined") { %><%= item.date %><% } %></p><br>
-        <p>Remark:  <% if (typeof (item.remark) !== "undefined") { %><%= item.remark %><% } %></p><br>
-    </div>
-        <a href="/edit?_id=<%= item._id %>" >Update the inventory</a><br><br>
-        <a href="/delete?_id=<%= item._id %>&owner=<%= item.ownerID %>">Delete the inventory</a><br><br>
-        <br><br> -->
 
     <table>
         <thead>
@@ -52,7 +40,7 @@
             </tr>
         </thead>
         <tbody>
-            <% dataSet.forEach((item) => { %>
+            <% items.forEach((item) => { %>
             <tr>
                 <td>
                     <%= item.id %>
@@ -76,9 +64,13 @@
                     <a href="/update?_id=<%= item._id %>" id="update_btn">Update
                 </td>
                 <td>
-                    <a href="/delete?_id=<%= item._id %>" id="update_btn">Update
+                    <a href="/delete?_id=<%= item._id %>" id="update_btn">Delete
+                </td>
+                <td>
+                    <a href="/edit?_id=<%= item._id %>" id="update_btn">Edit
                 </td>
             </tr>
+            <input type="hidden" name="id" value="<%= item._id %>">
             <%} )%>
         </tbody>
     </table>
