@@ -9,7 +9,7 @@ const assert = require('assert');
 const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const mongourl = 'mongodb+srv://admin:123@cluster0.nndk5cp.mongodb.net/?retryWrites=true&w=majority'; 
-const dbName = 'test';
+const dbName = 'Project';
 
 app.set('view engine','ejs');
 app.set('views','./views');
@@ -56,15 +56,15 @@ app.post('/login', (req,res) => {
 	res.redirect('/');
 });
 
-app.get('/details', async (req,res) => {
+app.get('/details', (req,res) => {
 
         const client = new MongoClient(mongourl);
-        await client.connect();
+        client.connect();
         const db = client.db(dbName);
         var dataSet = new Array();
 
         const data = db.collection("Inventory").find().sort({"quantity" : 1});
-        await data.forEach((element) =>{
+        data.forEach((element) =>{
             dataSet.push(element);
         });
 
@@ -74,11 +74,10 @@ app.get('/details', async (req,res) => {
 	
 });
 
-app.get('/details',(req, res) => {
-	
+
+app.get('/create', (req,res) => {
+	res.status(200).render('create');
 });
-
-
 
 const createDocument = (db, createDoc, callback) => {
     db.collection('Inventory').insertOne(createDoc, (error, results) => {
@@ -87,11 +86,6 @@ const createDocument = (db, createDoc, callback) => {
         callback();
     });
 };
-
-app.get('/create', (req,res) => {
-	res.status(200).render('create');
-});
-
 app.post('/create', (req,res) => {
     const client = new MongoClient(mongourl);
     client.connect((err) => {
@@ -113,10 +107,10 @@ app.post('/create', (req,res) => {
             console.log("Created new document successfully");
             client.close();
             console.log("Closed DB connection");
-            res.redirect('/');
-    		});
+            res.redirect('/details');
+    });
     client.close();
-	});
+});
 });
 
 app.get('/delete?:id', (req,res) => {
@@ -138,27 +132,16 @@ app.get('/delete?:id', (req,res) => {
         res.redirect('/details');
 });
 
-
-
-
-app.get('/details', (req,res) => {
-	res.status(200).render('details',{});
-});
-
-app.post('/details', (req,res) => {
-//
-});
-
 app.get('/edit', (req,res) => {
 	// res.status(200).render('edit',{});
 	const client = new MongoClient(mongourl);
 	const id = req.query._id; // Get the _id from the query parameter
 	console.log("_id:",id);
 	// Connect to MongoDB
-	await client.connect();
+	client.connect();
 	const db = client.db(dbName);    
 	// Fetch the document to be updated
-	const item = await db.collection("Inventory").findOne({ _id: ObjectID(id) });
+	const item = db.collection("Inventory").findOne({ _id: ObjectID(id) });
   
 	// Render the update.ejs template with the item data
 	res.render('update', { item });
@@ -316,4 +299,4 @@ app.delete('/api/inventory/:id', (req, res) => {
 
 
 
-app.listen(process.env.PORT || 8099);
+app.listen(8099);
