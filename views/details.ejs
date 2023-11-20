@@ -61,13 +61,10 @@
                     <%= item.date %>
                 </td>
                 <td>
-                    <a href="/update?_id=<%= item._id %>" id="update_btn">Update
+                    <a href="/edit?_id=<%= item._id %>" id="update_btn">Edit
                 </td>
                 <td>
                     <a href="/delete?_id=<%= item._id %>" id="update_btn">Delete
-                </td>
-                <td>
-                    <a href="/edit?_id=<%= item._id %>" id="update_btn">Edit
                 </td>
             </tr>
             <input type="hidden" name="id" value="<%= item._id %>">
