@@ -1,17 +1,66 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Inventory System</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </head>
+    <style>
+	.login-form {
+	background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+	}
+    </style>
+    
+    <body style="background-color: #508bfc">
+	<div class="container-fill">
+            <div class="cared text-white-50 mb-5" style="background-color: 	rgb(105, 105, 105) ;">
+                <div class="card-body">
+                <h2 align="center">Inventory Management System</h2>
+                    <p>
+                    COMPS381F Project</br>
+                    Welcome. Please Login to use Inventory Management System.<br>
+                    Application Developer: Cheng Tsz Tsun(12668285), Lo Pak Sam(13091092)
+                    </p>
+             </div>
+        </div>
+	</div>
+	<div class="login-form" >
+  		<div class="container">
+    		<div class="row d-flex justify-content-center align-items-center h-100">
+      		<div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        	<div class="card bg-dark text-white" style="border-radius: 1rem;">
+          	<div class="card-body p-5 text-center">
+		<div class="mb-md-5 mt-md-4 pb-5">
 
-<body>
-	<p>Use the following IDs and Password:</p>
-	<ol>
-		<li>user1 (password: user1)</li>
-		<li>user2 (password: user2)</li>
-	</ol>
-	<hr>
-	<form action="/login" method="post">
-		Username: <input type="text" name="name"><br>
-		Password: <input type="password" name="password"><br>
-		<input type="submit" value="Login">
-	</form>
+              		<h2 class="fw-bold mb-2">Login</h2>
+              		<p class="text-white-50 mb-5">Please enter your Username and password!</p>
+
+             		<form action="/login" method="post">
+                    
+                		<label for="username">Username:</label>
+                        
+                          	<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                            	<input type="text" class="form-control" name="username" id="username" placeholder="Username"><br>
+               
+                        	<label for="password">Password:</label>
+                     
+                            	<span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                            	<input type="password" class="form-control" name="password" id="password" placeholder="Password"><br>
+
+                        	<button type="submit" class="btn btn-primary" style="background-color: rgb(26, 0, 118);">Login</button>
+                	</form>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
-
+    
 </html>
