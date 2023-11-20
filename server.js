@@ -8,10 +8,11 @@ const formidable = require('express-formidable');
 const assert = require('assert');
 const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
-const mongourl = ''; 
+const mongourl = 'mongodb+srv://admin:123@cluster0.nndk5cp.mongodb.net/?retryWrites=true&w=majority'; 
 const dbName = 'test';
 
 app.set('view engine','ejs');
+app.set('views','./views');
 
 const SECRETKEY = 'COMPS381F';
 
@@ -19,6 +20,7 @@ const users = new Array(
 	{name: 'user1', password: 'user1'},
 	{name: 'user2', password: 'user2'}
 );
+var document = {}
 
 app.use(session({
   name: 'loginSession',
@@ -63,7 +65,7 @@ const createDocument = (db, createDoc, callback) => {
 };
 
 app.get('/create', (req,res) => {
-	res.status(200).render('create',{});
+	res.status(200).render('create');
 });
 
 app.post('/create', (req,res) => {
@@ -120,6 +122,35 @@ app.post('/search', (req,res) => {
 app.get('/logout', (req,res) => {
 	req.session = null;   // clear cookie-session
 	res.redirect('/');
+});
+
+app.post('/api/inventory', (req,res) => {
+    console.log("Create with API");
+    const client = new MongoClient(mongourl);
+    client.connect((err) => {
+        assert.equal(null, err);
+        console.log("Connected successfully to MongoDB.");
+        const db = client.db(dbName);
+        const document = {	
+            id: req.body.id,
+            name: req.body.inv_name,
+            category: req.body.type,
+            status: req.body.status,
+			location: req.body.location,
+			date: req.body.date
+        };
+
+        // Check all the fields of the form are filled in
+            console.log("OK for creating a new document");
+            createDocument(db, document, () => {
+            console.log("Created new document successfully");
+            client.close();
+            console.log("Closed DB connection");
+    });
+    client.close();
+});
+
+
 });
 
 app.listen(process.env.PORT || 8099);
